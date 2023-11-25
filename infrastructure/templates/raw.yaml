@@ -1,0 +1,42 @@
+{{ if .Values.raw.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.cluster.name }}-raw
+  labels:
+    cluster: {{ .Values.cluster.name | quote }}
+    app: metallb
+  namespace: {{ .Values.cluster.namespace | default "argocd" | quote }}
+  annotations:
+    {{- toYaml .Values.notifications | nindent 4 }}
+spec:
+  project: {{ .Values.cluster.name }}
+  destination:
+    server: {{ .Values.cluster.url }}
+    namespace: default
+  syncPolicy:
+    {{- if .Values.sync }}
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    {{- end }}
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://bedag.github.io/helm-charts/
+    chart: raw
+    targetRevision: {{ .Values.raw.version | quote }}
+    helm:
+      version: v3
+      releaseName: raw
+      values: |
+        resources:
+          {{- range .Values.raw.resources }}
+          - {{ toYaml . | nindent 12 }}
+          {{- end }}
+        templates:
+          {{- range .Values.raw.templates }}
+          - {{ toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}

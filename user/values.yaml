@@ -1,0 +1,20 @@
+# Set to the name of the cluster. This is used for the project as
+# well as the prefix for application names
+cluster: talos-openstack
+
+# Should applications automatically sync
+sync: true
+
+# apply configuration files in kubernetes folder
+kubernetes:
+  # should the kubernetes application be installed
+  enabled: true
+
+  # URL to this git repo so it can find the kubernetes yaml files
+  url: https://github.com/robkooper/talos-openstack.git
+
+  # use a specific version to be checked out
+  # version: HEAD
+
+  # path of the kubernetes yaml files
+  # path: kubernetes

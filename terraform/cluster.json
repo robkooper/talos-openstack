@@ -1,0 +1,17 @@
+{
+  "machines": [
+    {
+      "name": "controlplane",
+      "role": "controlplane",
+      "count": 3,
+      "flavor": "gp.medium",
+      "disk": 40
+    },
+    {
+      "name": "worker",
+      "count": 3,
+      "flavor": "gp.xlarge",
+      "disk": 40
+    }
+  ]
+}

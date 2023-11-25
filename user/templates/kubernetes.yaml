@@ -1,0 +1,30 @@
+{{- if .Values.kubernetes.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.cluster }}-kubernetes
+  labels:
+    cluster: {{ .Values.cluster }}
+    app: kubernetes
+  namespace: argocd
+  annotations:
+    {{- toYaml .Values.notifications | nindent 4 }}
+spec:
+  project: {{ .Values.cluster }}
+  destination:
+    name: {{ .Values.cluster }}
+    namespace: default
+  syncPolicy:
+    {{- if .Values.sync }}
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    {{- end }}
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: {{ .Values.kubernetes.url | quote }}
+    path: {{ .Values.kubernetes.path | default "kubernetes" | quote }}
+    targetRevision: {{ .Values.kubernetes.version | default "HEAD" | quote }}
+{{- end }}
