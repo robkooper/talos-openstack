@@ -22,6 +22,8 @@ Use `tofu init` to initialize the framework and `tofu apply` to create the clust
 
 The cluster might not be ready when **argocd** is executed (waiting for cluster) resulting in a failure. Please run `tofu apply` again to finish setting up the cluster.
 
+If you don't want to use rancher and argocd, you can modify `main.tf` and comment out the modules for rancher and argocd.
+
 ## Variables
 
 Below are the variables you can change to modify the cluster created. You can use `terraform.tfvars` or files with the name 
